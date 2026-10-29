@@ -3,33 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  
-  <!-- ========================================================
-       ALL 3 WEBSITE VERIFICATION META TAGS
-       ======================================================== -->
-  <meta name="monetag" content="e24d32f962ef868b009293f29de57c3a">
-  <meta name="33633c7105980a323fadcc9ec0ec15e3d0a0ec0f" content="33633c7105980a323fadcc9ec0ec15e3d0a0ec0f" />
-  <meta name='admaven-placement' content=BpjaGqdw5>
-
-  <title>⚠️ System Security Alert — Private Media Found</title>
+  <title>🐐 Gabru & Mouse — Dost Masti Zone</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-
-  <!-- ========================================================
-       ALL AUTOMATIC AD SCRIPTS (MONETAG + ADSTERRA + ADMAVEN)
-       ======================================================== -->
-  <!-- 1. Monetag MultiTag -->
-  <script src="https://quge5.com/88/tag.min.js" data-zone="303160" async data-cfasync="false"></script>
-  <!-- 2. Adsterra Popunder -->
-  <script data-cfasync="false" src="https://afders.org/1/a32622886629ff596d6386fd07339d1a"></script>
-  <!-- 3. AdMaven Push Service Worker Script -->
-  <script data-cfasync="false" src="/sw.js"></script>
 
   <style>
     * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #050507;
+      background-color: #07070a;
       color: #ffffff;
       overflow-x: hidden;
     }
@@ -37,195 +19,135 @@
 
     @keyframes hardShake {
       0%, 100% { transform: translate(0, 0); }
-      15% { transform: translate(-6px, 5px); }
-      30% { transform: translate(6px, -5px); }
-      45% { transform: translate(-5px, -3px); }
-      60% { transform: translate(5px, 4px); }
-      75% { transform: translate(-4px, 2px); }
+      20% { transform: translate(-5px, 4px); }
+      40% { transform: translate(5px, -4px); }
+      60% { transform: translate(-4px, -2px); }
+      80% { transform: translate(4px, 3px); }
     }
-    .shake-screen { animation: hardShake 0.22s infinite; }
+    .shake-screen { animation: hardShake 0.25s infinite; }
 
-    @keyframes policeStrobe {
-      0%, 100% { background-color: rgba(220, 38, 38, 0.18); border-color: #ef4444; box-shadow: 0 0 35px rgba(239, 68, 68, 0.45); }
-      50% { background-color: rgba(37, 99, 235, 0.18); border-color: #3b82f6; box-shadow: 0 0 35px rgba(59, 130, 246, 0.45); }
+    @keyframes alertPulse {
+      0%, 100% { background-color: rgba(220, 38, 38, 0.16); border-color: #ef4444; }
+      50% { background-color: rgba(37, 99, 235, 0.16); border-color: #3b82f6; }
     }
-    .police-flash { animation: policeStrobe 0.35s infinite; }
+    .alert-flash { animation: alertPulse 0.4s infinite; }
 
     @keyframes stampSlam {
-      0% { transform: scale(3.5) rotate(-25deg); opacity: 0; }
+      0% { transform: scale(3.2) rotate(-25deg); opacity: 0; }
       70% { transform: scale(0.9) rotate(-12deg); opacity: 1; }
       100% { transform: scale(1) rotate(-14deg); opacity: 1; }
     }
     .stamp-animate { animation: stampSlam 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-
-    .ad-box-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 8px auto;
-      min-height: 258px;
-      background: rgba(15, 23, 42, 0.65);
-      border: 1px dashed rgba(148, 163, 184, 0.25);
-      border-radius: 12px;
-      padding: 4px;
-    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-  <!-- FAKE ANDROID SYSTEM TOP ALERT BAR (Appears during prank) -->
-  <div id="fakeSystemTopBar" class="hidden sticky top-0 z-50 bg-red-600 text-white px-3 py-1.5 text-[11px] font-mono-code font-bold flex items-center justify-between shadow-lg">
+  <!-- TOP STATUS BAR -->
+  <div id="topAlertBar" class="hidden sticky top-0 z-50 bg-red-600 text-white px-3 py-1.5 text-[11px] font-mono-code font-bold flex items-center justify-between shadow-lg">
     <div class="flex items-center gap-1.5">
       <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
-      <span id="deviceModelText">ANDROID OS: COMPROMISED</span>
+      <span id="deviceModelText">PHONE SCAN: ACTIVE</span>
     </div>
     <div id="batteryStatusText" class="bg-black/40 px-2 py-0.5 rounded text-[10px]">
-      🔋 Battery Draining...
+      🔋 Checking...
     </div>
   </div>
 
-  <main class="flex-1 max-w-md w-full mx-auto px-3.5 py-3 flex flex-col justify-between">
+  <main class="flex-1 max-w-md w-full mx-auto px-3.5 py-4 flex flex-col justify-between">
 
     <!-- ==========================================
-         ADSTERRA 300x250 BANNER AD SLOT
+         SCREEN 0: ENTRY GATE
          ========================================== -->
-    <div class="ad-box-wrapper">
-      <span class="text-[9px] text-zinc-500 uppercase tracking-widest mb-1">Sponsored Security Notice</span>
-      <script>
-        atOptions = {
-          'key' : '2e8089fa23ea63f10058c218acbf487d',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
-        };
-      </script>
-      <script src="https://bicea.org/22/2e8089fa23ea63f10058c218acbf487d"></script>
-    </div>
-
-    <!-- ==========================================
-         SCREEN 0: WHATSAPP PRIVATE LEAK GATE
-         ========================================== -->
-    <section id="screenTrapGate" class="hidden my-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl text-center relative overflow-hidden">
+    <section id="screenTrapGate" class="hidden my-auto bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-2xl text-center">
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/15 border border-red-500/40 text-red-400 text-[11px] font-extrabold mb-2 animate-pulse">
-        <span>🔴 LIVE PUBLIC UPLOAD DETECTED</span>
+        <span>🔴 SECRET FOLDER UPLOADED</span>
       </div>
 
       <h1 class="text-lg font-black text-white leading-snug mb-1">
-        ⚠️ <span id="gateFriendName" class="text-amber-400 underline">Rohit</span> ki Private Chat & Video File
+        ⚠️ <span id="gateFriendName" class="text-amber-400 underline">Dost</span> Ki Pol Khol File
       </h1>
       <p class="text-xs text-zinc-400 mb-3">
-        Kisi ne tumhare naam se yeh private folder upload kiya hai. Auto-publish hone mein <span id="gateCountdown" class="text-red-400 font-mono-code font-bold">01:59</span> bache hain.
+        Kisi dost ne tumhare naam se yeh secret folder upload kiya hai. Auto-share hone mein <span id="gateCountdown" class="text-red-400 font-mono-code font-bold">01:59</span> bache hain.
       </p>
 
-      <!-- Blurred Fake Leaked Thumbnails to Create Curiosity -->
-      <div class="grid grid-cols-3 gap-2 mb-3 bg-black/70 p-2.5 rounded-xl border border-zinc-800">
-        <div class="relative h-20 rounded-lg bg-gradient-to-br from-emerald-900 to-zinc-900 overflow-hidden flex items-center justify-center border border-zinc-700">
-          <div class="blur-[3px] text-[9px] text-left p-1 font-mono-code text-emerald-300 leading-tight">
-            WhatsApp Chat<br>12:42 AM<br>"Kisi ko mat batana..."
-          </div>
-          <span class="absolute bg-black/80 text-[9px] font-bold px-1.5 py-0.5 rounded text-amber-300">🔒 Chat_1.jpg</span>
+      <div class="grid grid-cols-3 gap-2 mb-4 bg-black/70 p-2.5 rounded-xl border border-zinc-800">
+        <div class="relative h-20 rounded-lg bg-gradient-to-br from-emerald-900 to-zinc-900 flex items-center justify-center border border-zinc-700">
+          <span class="text-2xl blur-[1px]">💬</span>
+          <span class="absolute bottom-1 bg-black/80 text-[9px] font-bold px-1.5 py-0.5 rounded text-amber-300">Raat_Ki_Chat</span>
         </div>
-        <div class="relative h-20 rounded-lg bg-gradient-to-br from-rose-900 to-zinc-900 overflow-hidden flex items-center justify-center border border-zinc-700">
+        <div class="relative h-20 rounded-lg bg-gradient-to-br from-rose-900 to-zinc-900 flex items-center justify-center border border-zinc-700">
           <span class="text-2xl blur-[1px]">🎥</span>
-          <span class="absolute bg-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded text-white">▶ 0:42 sec</span>
+          <span class="absolute bottom-1 bg-red-600 text-[9px] font-bold px-1.5 py-0.5 rounded text-white">▶ 0:42 sec</span>
         </div>
-        <div class="relative h-20 rounded-lg bg-gradient-to-br from-purple-900 to-zinc-900 overflow-hidden flex items-center justify-center border border-zinc-700">
-          <span class="text-2xl blur-[2px]">🎙️</span>
-          <span class="absolute bg-black/80 text-[9px] font-bold px-1.5 py-0.5 rounded text-cyan-300">🔊 Call_Rec.mp3</span>
+        <div class="relative h-20 rounded-lg bg-gradient-to-br from-purple-900 to-zinc-900 flex items-center justify-center border border-zinc-700">
+          <span class="text-2xl blur-[1px]">🎙️</span>
+          <span class="absolute bottom-1 bg-black/80 text-[9px] font-bold px-1.5 py-0.5 rounded text-cyan-300">Audio_Clip</span>
         </div>
       </div>
 
-      <!-- CLICK 1 -> Fires MONETAG Direct Link + Enters Fullscreen Scary Hack -->
-      <button onclick="startStage1Hack()" class="w-full py-4 rounded-xl bg-gradient-to-r from-red-600 via-orange-600 to-red-600 text-white font-black text-sm uppercase tracking-wider shadow-lg shadow-red-600/40 active:scale-95 transition flex items-center justify-center gap-2">
-        <span>🔓 FILE DEKHO & PERMANENT DELETE KARO</span>
+      <!-- CLICK 1 -> Monetag Direct Link -->
+      <button onclick="startStage1()" class="w-full py-4 rounded-xl bg-gradient-to-r from-red-600 via-orange-600 to-red-600 text-white font-black text-sm uppercase tracking-wider shadow-lg active:scale-95 transition">
+        🔓 FOLDER DEKHO & ROKO
       </button>
     </section>
 
     <!-- ==========================================
-         STAGE 1: ULTRA-SCARY SYSTEM LOCK & WHATSAPP LEAK
+         STAGE 1: FUNNY POL-KHOL TRANSFER SIMULATION
          ========================================== -->
-    <section id="screenStage1" class="hidden my-auto rounded-2xl p-4 border-2 police-flash shake-screen relative overflow-hidden">
+    <section id="screenStage1" class="hidden my-auto rounded-2xl p-4 border-2 alert-flash shake-screen relative overflow-hidden">
       <div class="flex items-center justify-between border-b border-red-500/50 pb-2 mb-2.5">
-        <div class="flex items-center gap-1.5">
-          <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-          <span class="font-mono-code text-xs font-black text-red-400">REMOTE ACCESS: ACTIVE</span>
-        </div>
-        <span class="font-mono-code text-[10px] bg-red-600 text-white px-2 py-0.5 rounded font-black">DO NOT CLOSE</span>
+        <span class="font-mono-code text-xs font-black text-red-400">⚡ AUTO-SHARE RUNNING</span>
+        <span class="font-mono-code text-[10px] bg-red-600 text-white px-2 py-0.5 rounded font-black">STEP 1/3</span>
       </div>
 
       <h2 class="text-base sm:text-lg font-black text-white uppercase leading-tight mb-1">
-        🚨 <span id="hackTargetName" class="text-yellow-300 underline">ROHIT</span> KA WHATSAPP & GALLERY COPY HO RAHA HAI!
+        🚨 <span id="hackTargetName" class="text-yellow-300 underline">DOST</span> KA SECRET DATA SHARE HO RAHA HAI!
       </h2>
       <p class="text-[11px] text-red-200 font-semibold mb-2.5">
-        Warning: Back button dabane par saari files turant tumhare <span class="text-yellow-300 font-bold">WhatsApp Contacts & Family Group</span> mein forward ho jayengi!
+        Ruko! Tumhari chhupi hui gallery photos aur raat wali chats <span class="text-yellow-300 font-bold">Family Group & Doston</span> ko bheji ja rahi hain!
       </p>
 
-      <!-- Live File Transfer Table -->
-      <div class="bg-black/95 border border-red-500/60 rounded-xl p-2.5 mb-2.5 font-mono-code text-[10px] space-y-1.5">
-        <div class="flex justify-between text-zinc-400 border-b border-zinc-800 pb-1">
-          <span>FOLDER NAME</span>
-          <span>STATUS</span>
-        </div>
-        <div class="flex justify-between text-emerald-400">
-          <span>📁 WhatsApp_Deleted_Chats.db</span>
-          <span class="font-bold">SENT (100%) ✓</span>
-        </div>
-        <div class="flex justify-between text-amber-300">
-          <span>📸 Hidden_Gallery_Photos (38)</span>
-          <span class="font-bold animate-pulse">UPLOADING...</span>
-        </div>
-        <div class="flex justify-between text-red-400">
-          <span>📞 Contact_List (Dad, Mom, Friends)</span>
-          <span class="font-bold">SELECTED FOR SHARE</span>
-        </div>
-      </div>
+      <div id="terminalBox" class="bg-black/90 border border-zinc-800 rounded-lg p-2.5 font-mono-code text-[10px] text-green-400 h-28 overflow-y-auto space-y-1 mb-3"></div>
 
-      <!-- Terminal Log -->
-      <div id="hackTerminalBox" class="bg-black/90 border border-zinc-800 rounded-lg p-2 font-mono-code text-[10px] text-green-400 h-24 overflow-y-auto space-y-1 mb-2.5"></div>
-
-      <!-- Progress Bar -->
       <div class="mb-3">
         <div class="flex justify-between text-xs font-mono-code font-black mb-1">
-          <span id="hackCurrentTask" class="text-yellow-300">Forwarding to WhatsApp Contacts...</span>
-          <span id="hackPercentText" class="text-red-400 text-sm">18%</span>
+          <span id="currentTaskText" class="text-yellow-300">Preparing Group Share...</span>
+          <span id="percentText" class="text-red-400 text-sm">18%</span>
         </div>
         <div class="w-full h-4 bg-zinc-950 rounded-full overflow-hidden border border-red-500 p-0.5">
-          <div id="hackProgressBar" class="h-full bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 rounded-full transition-all duration-150" style="width: 18%"></div>
+          <div id="progressBar" class="h-full bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 rounded-full transition-all duration-150" style="width: 18%"></div>
         </div>
       </div>
 
-      <!-- CLICK 2 -> Fires ADSTERRA SmartLink & Opens Emergency Verification Modal -->
-      <button onclick="triggerEmergencyVerifyModal()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-500 to-red-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl animate-bounce">
-        🛑 STOP WHATSAPP FORWARDING NOW! (EMERGENCY)
+      <!-- CLICK 2 -> Adsterra SmartLink -->
+      <button onclick="openEmergencyPopup()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-500 to-red-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-xl animate-bounce">
+        🛑 GROUP SHARE ROKO ABHI! (STOP)
       </button>
 
-      <!-- EXTRA PANIC POPUP MODAL (CLICK 3 -> Fires ADMAVEN SmartLink!) -->
+      <!-- MODAL: CLICK 3 -> AdMaven SmartLink -->
       <div id="emergencyModal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
         <div class="bg-zinc-900 border-2 border-red-500 rounded-2xl p-5 max-w-sm w-full text-center shadow-2xl">
-          <div class="text-4xl mb-2 animate-bounce">⚠️</div>
-          <h3 class="text-base font-black text-white uppercase mb-1">98% UPLOAD PAUSED!</h3>
+          <div class="text-4xl mb-2 animate-bounce">🎙️</div>
+          <h3 class="text-base font-black text-white uppercase mb-1">98% PAR RUK GAYA!</h3>
           <p class="text-xs text-zinc-300 mb-4">
-            Jis hacker ne tumhara phone lock kiya hai usne tumhare liye ek <span class="text-amber-400 font-bold">Personal Gali Audio Recording</span> bheji hai! Upload cancel karne ke liye pehle woh recording suno:
+            Jis kamine dost ne yeh kaand kiya hai, usne tumhare liye ek <span class="text-amber-400 font-bold">Special Gali Audio Message</span> chhoda hai! Share cancel karne ke liye pehle woh suno:
           </p>
-          <!-- CLICK 3 -> Fires ADMAVEN SmartLink -->
-          <button onclick="goToStage2Roast()" class="w-full py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider shadow-lg">
-            🔊 PLAY HACKER VOICE & CANCEL UPLOAD ➡️
+          <button onclick="goToStage2()" class="w-full py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider shadow-lg">
+            🔊 AUDIO SUNO & CANCEL KARO ➡️
           </button>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         STAGE 2: GABRU & MOUSE FULL DESI ROAST BOMB
+         STAGE 2: GABRU & MOUSE ROAST
          ========================================== -->
-    <section id="screenStage2" class="hidden my-auto bg-zinc-900/95 border-2 border-amber-500 rounded-2xl p-4 shadow-2xl relative overflow-hidden">
+    <section id="screenStage2" class="hidden my-auto bg-zinc-900/95 border-2 border-amber-500 rounded-2xl p-4 shadow-2xl">
       <div class="flex items-center justify-between mb-2.5">
         <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[11px] font-black">
-          🐐 GABRU & MOUSE COMEDY TRAP 🐭
+          🐐 GABRU & MOUSE COMEDY 🐭
         </span>
-        <span class="font-mono-code text-[11px] bg-amber-500 text-black px-2 py-0.5 rounded font-black">GOTCHA! 😂</span>
+        <span class="font-mono-code text-[11px] bg-amber-500 text-black px-2 py-0.5 rounded font-black">STEP 2/3</span>
       </div>
 
       <div class="bg-gradient-to-b from-amber-500/20 via-red-600/15 to-zinc-950 border border-amber-500/40 rounded-2xl p-4 text-center mb-3">
@@ -236,11 +158,11 @@
         </div>
 
         <h3 class="text-base font-black text-white mt-2">
-          "Oye <span id="roastVictimName" class="text-amber-400 underline">ROHIT</span>! Phaat gayi na?!" 💀🔥
+          "Oye <span id="roastVictimName" class="text-amber-400 underline">DOST</span>! Dar gaya tha na?!" 💀🔥
         </h3>
 
         <div id="roastDialogueBox" class="mt-2 bg-black/80 border border-zinc-800 rounded-xl p-3 text-xs text-amber-200 font-bold leading-relaxed min-h-[72px] flex items-center justify-center">
-          "Abey shakal dekh apni! Jab Family Group mein WhatsApp chat jane ka naam aaya toh kaleja muh ko aa gaya tha na?! 😂"
+          "Abey shakal dekh apni! Jab Family Group ka naam aaya toh saans atak gayi thi na?! 😂"
         </div>
 
         <div class="mt-3 flex items-center justify-center gap-2">
@@ -248,125 +170,102 @@
             🔊 Dobara Suno
           </button>
           <a href="https://instagram.com/gabru.mouse.comedy" target="_blank" class="px-3 py-1.5 rounded-lg bg-pink-600/20 hover:bg-pink-600/30 text-[11px] font-bold text-pink-300 border border-pink-500/40">
-            📸 Follow @gabru.mouse.comedy
+            📸 @gabru.mouse.comedy
           </a>
         </div>
       </div>
 
-      <!-- Cliffhanger Suspense for Stage 3 -> CLICK 4 Fires HILLTOPADS Direct Link -->
+      <!-- CLICK 4 -> HilltopAds Direct Link -->
       <div class="bg-red-950/70 border border-red-500 rounded-xl p-3 text-center">
-        <div class="flex items-center justify-center gap-1.5 text-red-300 text-xs font-extrabold mb-1">
-          <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-          <span>RUKO! ASLI BEIZZATI ABHI BAAKI HAI!</span>
-        </div>
         <p class="text-[11px] text-zinc-200 mb-3">
-          Jab tum dar ke maare screen daba rahe the, tab tumhare <span class="text-amber-300 font-bold">Front Camera</span> se tumhari dari hui shakal ki Live Photo khinch gayi hai! 📸
+          Ruko! Jab tum dar ke maare button daba rahe the, tab tumhare <span class="text-amber-300 font-bold">Front Camera</span> se tumhari dari hui shakal ki photo khinch gayi hai! 📸
         </p>
-        <button onclick="goToStage3Camera()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg active:scale-95 transition">
-          📸 APNI DARI HUI PHOTO DEKHO & DELETE KARO ➡️
+        <button onclick="goToStage3()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg active:scale-95 transition">
+          📸 APNI PHOTO DEKHO & DELETE KARO ➡️
         </button>
       </div>
     </section>
 
     <!-- ==========================================
-         STAGE 3: CAMERA MUGSHOT + SHRINKME BONUS + VIRAL SHARE
+         STAGE 3: CAMERA + SHRINKME BONUS + SHARE
          ========================================== -->
     <section id="screenStage3" class="hidden my-auto bg-zinc-900/95 border border-zinc-800 rounded-2xl p-4 shadow-2xl">
-      <!-- Part A: Victim Mugshot -->
       <div id="mugshotContainer" class="mb-3.5">
-        <div class="flex items-center justify-between mb-1.5">
-          <span class="text-xs font-extrabold text-emerald-400">📸 LIVE DARI HUI SHAKAL CAPTURED</span>
-          <span class="font-mono-code text-[10px] bg-red-600 text-white px-2 py-0.5 rounded font-black">EXPOSED 😂</span>
-        </div>
-
         <div class="relative w-full h-48 bg-black rounded-xl overflow-hidden border-2 border-red-500 flex items-center justify-center">
           <video id="victimCameraFeed" autoplay playsinline muted class="w-full h-full object-cover transform scale-x-[-1] hidden"></video>
 
           <div id="cameraFallbackBox" class="flex flex-col items-center justify-center text-center p-4">
             <div class="text-5xl mb-1">🐔</div>
-            <p class="text-xs font-bold text-zinc-200"><span id="mugshotNameFallback">Dost</span> Dar Ke Maare Bhaag Gaya!</p>
-            <p class="text-[10px] text-zinc-400">(Ungli rakh li front camera par 😂)</p>
+            <p class="text-xs font-bold text-zinc-200"><span id="mugshotNameFallback">Dost</span> Dar Gaya!</p>
+            <p class="text-[10px] text-zinc-400">(Camera chhupa liya dar ke maare 😂)</p>
           </div>
 
           <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div class="stamp-animate border-4 border-red-600 bg-black/80 px-4 py-1.5 rounded-lg text-center shadow-2xl">
               <p class="text-red-500 font-black text-xs tracking-widest uppercase">100% CERTIFIED</p>
-              <p class="text-amber-400 font-black text-base tracking-tight uppercase">PHATTU DOST 🐔😂</p>
+              <p class="text-amber-400 font-black text-base tracking-tight uppercase">MURGA DOST 🐔😂</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Part B: CLICK 5 -> SHRINKME.IO HIGH-CPM BONUS PACK ($5-$8 per 1k views) -->
+      <!-- CLICK 5 -> ShrinkMe Bonus Link -->
       <div class="mb-3.5 bg-gradient-to-r from-red-950 via-zinc-900 to-red-950 border border-red-500/50 rounded-xl p-3 text-center">
-        <p class="text-[11px] font-extrabold text-amber-300 mb-1">
-          🔞 Gabru & Mouse Uncensored (No-Beep) Gali Video Pack
+        <p class="text-[11px] font-extrabold text-amber-300 mb-1.5">
+          🔥 Gabru & Mouse Uncensored (No-Beep) Comedy Pack
         </p>
-        <p class="text-[10px] text-zinc-400 mb-2">
-          Jo videos Instagram par ban hone ke dar se nahi daalte, woh yahan dekho:
-        </p>
-        <button onclick="openShrinkMeBonus()" class="w-full py-2.5 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 hover:opacity-95 text-white font-black text-xs uppercase tracking-wider shadow-lg">
-          🔓 UNLOCK 18+ UNCENSORED REELS PACK
+        <button onclick="openShrinkMeBonus()" class="w-full py-2.5 rounded-lg bg-gradient-to-r from-red-600 to-pink-600 text-white font-black text-xs uppercase tracking-wider shadow-lg">
+          🔓 UNLOCK BONUS COMEDY PACK
         </button>
       </div>
 
-      <!-- Part C: Viral Creator Form (Dost ko Murga Banao) -->
+      <!-- Viral Share Form -->
       <div class="bg-gradient-to-b from-zinc-800/90 to-zinc-950 border border-amber-500/50 rounded-xl p-3.5">
-        <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-black mb-1">
-          <span>🔥 BADLA LENE KA TIME!</span>
-        </div>
         <h3 id="creatorHeadingText" class="text-base font-black text-white leading-snug mb-1">
-          Teri toh phat gayi thi! 😂 Ab apne kisi Harami Dost ki phaado!
+          Ab Apne Kisi Harami Dost Ko Murga Banao! 😂🔥
         </h3>
         <p class="text-[11px] text-zinc-400 mb-2.5">
-          Neeche dost ka naam likh kar link bhejo — jab woh kholega toh uska phone bhi aise hi siren marega aur WhatsApp leak dikhayega!
+          Neeche dost ka naam likh kar link bhejo — jab woh kholega toh uske saath bhi yahi 3-in-1 masti hogi!
         </p>
 
         <div class="space-y-2">
-          <div>
-            <label class="block text-[11px] font-bold text-zinc-300 mb-1">1. Apne Dost ka Naam Likho:</label>
-            <input id="inputFriendName" type="text" placeholder="Eg: Rohit, Aman, Vikas..." class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-zinc-700 focus:border-amber-400 focus:outline-none text-sm font-bold text-white placeholder-zinc-600" />
-          </div>
+          <input id="inputFriendName" type="text" placeholder="Dost ka naam (Eg: Rohit, Sonu)..." class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-zinc-700 focus:border-amber-400 focus:outline-none text-sm font-bold text-white" />
 
-          <div>
-            <label class="block text-[11px] font-bold text-zinc-300 mb-1">2. Kis Bahane Se Click Karwana Hai?</label>
-            <select id="inputBaitStyle" class="w-full px-3 py-2.5 rounded-xl bg-black border border-zinc-700 text-xs font-semibold text-zinc-200 focus:border-amber-400 focus:outline-none">
-              <option value="leak">📁 "Bhai teri private video aur chat is page par kisne daal di? Jaldi delete kar!"</option>
-              <option value="gf">💔 "Oye teri bandi/crush ki secret recording leak ho gayi is link par!"</option>
-              <option value="police">🚓 "Bhai tere number par cyber complaint darj hui hai, list mein naam dekh!"</option>
-            </select>
-          </div>
+          <select id="inputBaitStyle" class="w-full px-3 py-2.5 rounded-xl bg-black border border-zinc-700 text-xs font-semibold text-zinc-200 focus:outline-none">
+            <option value="leak">📁 "Bhai teri secret video aur chat is page par kisne daal di? Jaldi dekh!"</option>
+            <option value="gf">💔 "Oye teri crush/bandi ki secret recording viral ho rahi hai is link par!"</option>
+            <option value="roast">😂 "Bhai Gabru ne tere naam par kya khatarnaak video banayi hai dekh!"</option>
+          </select>
 
-          <button onclick="generatePrankLink()" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-black text-xs uppercase tracking-wider shadow-md transition">
-            ⚡ Dost Ka Khatarnaak Link Banao
+          <button onclick="generatePrankLink()" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-black text-xs uppercase tracking-wider shadow-md">
+            ⚡ Dost Ka Link Banao
           </button>
         </div>
 
-        <!-- MULTI-PLATFORM SHARE DRAWER -->
         <div id="multiShareBox" class="hidden mt-3 pt-3 border-t border-zinc-800 space-y-2">
           <div class="bg-black/90 border border-zinc-800 rounded-lg p-2 flex items-center justify-between gap-2">
             <input id="generatedUrlInput" type="text" readonly class="bg-transparent text-[11px] font-mono-code text-emerald-400 w-full focus:outline-none" />
-            <button onclick="copyPrankMessage()" id="copyBtnText" class="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-[11px] font-bold text-white shrink-0">
+            <button onclick="copyPrankMessage()" id="copyBtnText" class="px-2.5 py-1 rounded bg-zinc-800 text-[11px] font-bold text-white shrink-0">
               📋 Copy
             </button>
           </div>
 
-          <button onclick="shareEverywhereNative()" class="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-black text-xs uppercase tracking-wider shadow-lg flex items-center justify-center gap-2">
-            <span>📲 Share on Instagram / Snapchat / All Apps</span>
+          <button onclick="shareEverywhereNative()" class="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-black text-xs uppercase tracking-wider shadow-lg">
+            📲 Share on Instagram / Snapchat / All Apps
           </button>
 
           <div class="grid grid-cols-2 gap-2">
-            <button onclick="shareOnWhatsApp()" class="py-2.5 px-3 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/50 text-[#25D366] font-extrabold text-xs flex items-center justify-center gap-1.5">
-              <span>🟢 WhatsApp</span>
+            <button onclick="shareOnWhatsApp()" class="py-2.5 px-3 rounded-xl bg-[#25D366]/20 border border-[#25D366]/50 text-[#25D366] font-extrabold text-xs">
+              🟢 WhatsApp
             </button>
-            <button onclick="shareOnInstagramDM()" class="py-2.5 px-3 rounded-xl bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/50 text-pink-300 font-extrabold text-xs flex items-center justify-center gap-1.5">
-              <span>📸 Insta DM / Story</span>
+            <button onclick="shareOnInstagramDM()" class="py-2.5 px-3 rounded-xl bg-pink-500/20 border border-pink-500/50 text-pink-300 font-extrabold text-xs">
+              📸 Insta DM / Story
             </button>
-            <button onclick="shareOnTelegram()" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/50 text-sky-300 font-extrabold text-xs flex items-center justify-center gap-1.5">
-              <span>✈️ Telegram</span>
+            <button onclick="shareOnTelegram()" class="py-2.5 px-3 rounded-xl bg-sky-500/20 border border-sky-500/50 text-sky-300 font-extrabold text-xs">
+              ✈️ Telegram
             </button>
-            <button onclick="shareOnFacebook()" class="py-2.5 px-3 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/50 text-blue-300 font-extrabold text-xs flex items-center justify-center gap-1.5">
-              <span>🔵 Facebook</span>
+            <button onclick="shareOnFacebook()" class="py-2.5 px-3 rounded-xl bg-blue-600/20 border border-blue-500/50 text-blue-300 font-extrabold text-xs">
+              🔵 Facebook
             </button>
           </div>
         </div>
@@ -376,15 +275,12 @@
   </main>
 
   <div id="toastBanner" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-black text-xs px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 z-50">
-    ✅ Link Copy Ho Gaya! Ab Instagram ya WhatsApp par paste karo!
+    ✅ Link Copy Ho Gaya!
   </div>
-
-  <!-- ADSTERRA SOCIAL BAR CODE -->
-  <script data-cfasync="false" src="https://bicea.org/14/e21ac6245b14cc3063799bc4640261a5"></script>
 
   <script>
     // ==============================================================
-    // ALL 5 EARNING LINKS INTEGRATED (5 DIFFERENT NETWORKS!)
+    // ALL 5 PERMANENT EARNING LINKS (WORKS ON ANY DOMAIN!)
     // ==============================================================
     const LINK_1_MONETAG   = "https://uplcm.com/4/12144629";
     const LINK_2_ADSTERRA  = "https://asiafilm.org/4/77df7aaf8d18b77b4961e705b69a925b";
@@ -392,52 +288,24 @@
     const LINK_4_HILLTOP   = "https://bony-teaching.com/BDOeym";
     const LINK_5_SHRINKME  = "https://shrinkme.click/177520";
 
-    function fireDirectLinkAd(url) {
-      try {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      } catch (e) {}
+    function openAdLink(url) {
+      try { window.open(url, '_blank', 'noopener,noreferrer'); } catch (e) {}
     }
 
     function openShrinkMeBonus() {
-      fireDirectLinkAd(LINK_5_SHRINKME);
+      openAdLink(LINK_5_SHRINKME);
     }
 
-    // ==============================================================
-    // REAL DEVICE & BATTERY DETECTOR (MAKES IT SUPER SCARY!)
-    // ==============================================================
     async function detectDeviceAndBattery() {
-      const ua = navigator.userAgent;
-      let model = "ANDROID SYSTEM";
-      if (/iPhone/i.test(ua)) model = "IPHONE iOS SECURITY";
-      else if (/Samsung|SM-/i.test(ua)) model = "SAMSUNG KNOX ALERT";
-      else if (/Redmi|Mi|POCO/i.test(ua)) model = "XIAOMI MIUI SECURITY";
-      else if (/Vivo/i.test(ua)) model = "VIVO SYSTEM ALERT";
-      else if (/Oppo|Realme/i.test(ua)) model = "REALME/OPPO OS ALERT";
-
-      document.getElementById('deviceModelText').textContent = `${model}: BREACH`;
-
       if ('getBattery' in navigator) {
         try {
           const bat = await navigator.getBattery();
           const lvl = Math.round(bat.level * 100);
-          document.getElementById('batteryStatusText').textContent = `🔋 Battery: ${lvl}% (Draining Fast)`;
+          document.getElementById('batteryStatusText').textContent = `🔋 Battery: ${lvl}%`;
         } catch (e) {}
       }
     }
 
-    // Lock Back Button during prank so victim panics and clicks our buttons!
-    function lockBackButton() {
-      history.pushState(null, null, location.href);
-      window.onpopstate = function () {
-        history.go(1);
-        if (navigator.vibrate) navigator.vibrate([400, 100, 400]);
-        showToast('🚨 BACK BUTTON BLOCKED! Upload روکنے ke liye STOP button dabao!');
-      };
-    }
-
-    // ==============================================================
-    // LOUD DUAL POLICE + ALARM SIREN ENGINE
-    // ==============================================================
     let audioCtx = null;
     let sirenInterval = null;
 
@@ -449,38 +317,30 @@
       if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
-    function startCyberSiren() {
+    function startSiren() {
       initAudio();
-      stopCyberSiren();
+      stopSiren();
       let toggle = true;
       sirenInterval = setInterval(() => {
         if (!audioCtx) return;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sawtooth';
-        // Loud urgent police wail frequencies
-        osc.frequency.setValueAtTime(toggle ? 960 : 620, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(toggle ? 620 : 960, audioCtx.currentTime + 0.28);
-        gain.gain.setValueAtTime(0.28, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.02, audioCtx.currentTime + 0.29);
+        osc.frequency.setValueAtTime(toggle ? 920 : 600, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.24, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.02, audioCtx.currentTime + 0.28);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
+        osc.stop(audioCtx.currentTime + 0.29);
         toggle = !toggle;
       }, 300);
     }
 
-    function stopCyberSiren() {
-      if (sirenInterval) {
-        clearInterval(sirenInterval);
-        sirenInterval = null;
-      }
+    function stopSiren() {
+      if (sirenInterval) { clearInterval(sirenInterval); sirenInterval = null; }
     }
 
-    // ==============================================================
-    // URL PARAMS & INITIAL ROUTING
-    // ==============================================================
     const urlParams = new URLSearchParams(window.location.search);
     let targetFriendName = (urlParams.get('naam') || '').trim();
     let currentShareUrl = '';
@@ -504,23 +364,12 @@
 
       hideAllScreens();
       document.getElementById('screenTrapGate').classList.remove('hidden');
-
-      // Fake countdown timer on Gate
-      let sec = 119;
-      setInterval(() => {
-        if (sec > 0) sec--;
-        const m = String(Math.floor(sec / 60)).padStart(2, '0');
-        const s = String(sec % 60).padStart(2, '0');
-        const el = document.getElementById('gateCountdown');
-        if (el) el.textContent = `${m}:${s}`;
-      }, 1000);
     }
 
     function openCreatorOnlyMode() {
-      stopCyberSiren();
+      stopSiren();
       hideAllScreens();
       document.getElementById('mugshotContainer').classList.add('hidden');
-      document.getElementById('creatorHeadingText').textContent = 'Apne Harami Dost Ki Phatane Wala Link Banao! 🔥';
       document.getElementById('screenStage3').classList.remove('hidden');
     }
 
@@ -531,54 +380,37 @@
       document.getElementById('screenStage3').classList.add('hidden');
     }
 
-    // ==============================================================
-    // STAGE 1 -> CLICK 1 FIRES MONETAG + FULLSCREEN + BACK LOCK
-    // ==============================================================
-    let hackTimer = null;
-    function startStage1Hack() {
-      // 1st Earning Trigger: Monetag
-      fireDirectLinkAd(LINK_1_MONETAG);
-
-      // Force Fullscreen so victim thinks phone is locked
-      try {
-        if (document.documentElement.requestFullscreen) {
-          document.documentElement.requestFullscreen();
-        }
-      } catch (e) {}
-
-      lockBackButton();
-      document.getElementById('fakeSystemTopBar').classList.remove('hidden');
-
+    let timerRef = null;
+    function startStage1() {
+      openAdLink(LINK_1_MONETAG);
+      document.getElementById('topAlertBar').classList.remove('hidden');
       hideAllScreens();
       document.getElementById('screenStage1').classList.remove('hidden');
 
-      startCyberSiren();
-      if (navigator.vibrate) navigator.vibrate([500, 150, 500, 150, 800, 150, 600]);
+      startSiren();
+      if (navigator.vibrate) navigator.vibrate([400, 150, 400, 150, 600]);
 
-      const terminal = document.getElementById('hackTerminalBox');
-      const bar = document.getElementById('hackProgressBar');
-      const pctText = document.getElementById('hackPercentText');
-      const taskText = document.getElementById('hackCurrentTask');
+      const terminal = document.getElementById('terminalBox');
+      const bar = document.getElementById('progressBar');
+      const pctText = document.getElementById('percentText');
+      const taskText = document.getElementById('currentTaskText');
 
       const logs = [
-        `[!] Root Access Granted on ${targetFriendName}'s Phone...`,
-        `[!] Exporting WhatsApp Secret Chats & Voice Notes...`,
-        `[!] Copying Hidden Gallery Videos (38 Files Found)...`,
-        `[!] Selecting Contacts: Mom, Dad, Family Group...`,
-        `[!] Auto-Forwarding Zip File in 5 seconds...`
+        `> Opening ${targetFriendName}'s Secret Folder...`,
+        `> Packing Midnight Chats & Voice Notes...`,
+        `> Found 38 Hidden Gallery Photos...`,
+        `> Selecting WhatsApp Groups & Contacts...`,
+        `> Auto-Share at 98% — Ready to Send!`
       ];
 
       terminal.innerHTML = '';
       let progress = 18;
       let logIdx = 0;
 
-      if (hackTimer) clearInterval(hackTimer);
-      hackTimer = setInterval(() => {
+      if (timerRef) clearInterval(timerRef);
+      timerRef = setInterval(() => {
         progress += Math.floor(Math.random() * 15) + 7;
-        if (progress >= 98) {
-          progress = 98;
-          clearInterval(hackTimer);
-        }
+        if (progress >= 98) { progress = 98; clearInterval(timerRef); }
         bar.style.width = progress + '%';
         pctText.textContent = progress + '%';
 
@@ -586,70 +418,47 @@
           const line = document.createElement('div');
           line.textContent = logs[logIdx];
           terminal.appendChild(line);
-          terminal.scrollTop = terminal.scrollHeight;
-          taskText.textContent = logs[logIdx].replace('[!] ', '');
+          taskText.textContent = logs[logIdx].replace('> ', '');
           logIdx++;
         }
       }, 550);
     }
 
-    // CLICK 2 -> FIRES ADSTERRA SMARTLINK & OPENS EMERGENCY MODAL
-    function triggerEmergencyVerifyModal() {
-      fireDirectLinkAd(LINK_2_ADSTERRA);
-      if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
+    function openEmergencyPopup() {
+      openAdLink(LINK_2_ADSTERRA);
       document.getElementById('emergencyModal').classList.remove('hidden');
     }
 
-    // ==============================================================
-    // STAGE 2 -> CLICK 3 FIRES ADMAVEN SMARTLINK & PLAYS GABRU ROAST
-    // ==============================================================
-    function goToStage2Roast() {
-      // 3rd Earning Trigger: AdMaven SmartLink
-      fireDirectLinkAd(LINK_3_ADMAVEN);
-
+    function goToStage2() {
+      openAdLink(LINK_3_ADMAVEN);
       document.getElementById('emergencyModal').classList.add('hidden');
-      if (hackTimer) clearInterval(hackTimer);
-      stopCyberSiren();
-
+      if (timerRef) clearInterval(timerRef);
+      stopSiren();
       hideAllScreens();
       document.getElementById('screenStage2').classList.remove('hidden');
-
       speakGabruRoast();
     }
 
     function speakGabruRoast() {
       const name = targetFriendName || 'Dost';
-      const lines = [
-        `Oye ${name}! Phat gayi na?! Jab लिखा aaya ki Mom Dad aur Family Group mein WhatsApp chat ja rahi hai toh gote muh mein aa gaye the na?! Gabru aur Mouse ne tera popat bana diya!`,
-        `Abey ${name} shakal dekh apni! Gallery leak ke naam se pasine chhoot gaye! Ab neeche button daba aur dekh tere front camera se kya dari hui photo khinchi hai!`
-      ];
-      const chosenLine = lines[Math.floor(Math.random() * lines.length)];
+      const chosenLine = `Oye ${name}! Phat gayi na?! Jab Family Group mein photo jane ka naam aaya toh saans atak gayi thi na?! Gabru aur Mouse ne tera popat bana diya!`;
       document.getElementById('roastDialogueBox').textContent = `"${chosenLine}"`;
 
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utter = new SpeechSynthesisUtterance(chosenLine);
         utter.lang = 'hi-IN';
-        utter.pitch = 0.8;
-        utter.rate = 1.05;
+        utter.pitch = 0.85;
         window.speechSynthesis.speak(utter);
       }
     }
 
-    // ==============================================================
-    // STAGE 3 -> CLICK 4 FIRES HILLTOPADS & OPENS FRONT CAMERA
-    // ==============================================================
-    async function goToStage3Camera() {
-      // 4th Earning Trigger: HilltopAds Direct Link
-      fireDirectLinkAd(LINK_4_HILLTOP);
-
+    async function goToStage3() {
+      openAdLink(LINK_4_HILLTOP);
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      document.getElementById('fakeSystemTopBar').classList.add('hidden');
-
+      document.getElementById('topAlertBar').classList.add('hidden');
       hideAllScreens();
       document.getElementById('mugshotContainer').classList.remove('hidden');
-      document.getElementById('creatorHeadingText').textContent =
-        `Teri toh phat gayi thi ${targetFriendName}! 😂 Ab apne kisi Dost ki phaado!`;
       document.getElementById('screenStage3').classList.remove('hidden');
 
       const videoEl = document.getElementById('victimCameraFeed');
@@ -657,10 +466,7 @@
 
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'user' },
-            audio: false
-          });
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
           videoEl.srcObject = stream;
           videoEl.classList.remove('hidden');
           fallbackEl.classList.add('hidden');
@@ -671,22 +477,18 @@
       }
     }
 
-    // ==============================================================
-    // MULTI-PLATFORM SHARE GENERATOR
-    // ==============================================================
     function generatePrankLink() {
       const friendInput = document.getElementById('inputFriendName').value.trim() || 'Rohit';
       const baitType = document.getElementById('inputBaitStyle').value;
-
       const baseUrl = window.location.origin + window.location.pathname;
       currentShareUrl = `${baseUrl}?naam=${encodeURIComponent(friendInput)}`;
 
       if (baitType === 'leak') {
-        currentShareMessage = `⚠️ Bhai ${friendInput}, teri private video aur WhatsApp chat is page par kisne upload kar di?! 😱 2 minute mein public ho jayegi, jaldi khol kar delete kar: ${currentShareUrl}`;
+        currentShareMessage = `⚠️ Bhai ${friendInput}, teri secret video aur chat is page par kisne daal di?! 😱 Jaldi khol kar hata isko: ${currentShareUrl}`;
       } else if (baitType === 'gf') {
-        currentShareMessage = `💔 Oye ${friendInput}, teri bandi/crush ki secret call recording aur chat leak ho gayi hai is link par! 😱 Jaldi dekh: ${currentShareUrl}`;
+        currentShareMessage = `💔 Oye ${friendInput}, teri bandi/crush ki secret recording viral ho rahi hai is link par! 😂 Jaldi dekh: ${currentShareUrl}`;
       } else {
-        currentShareMessage = `🚓 Bhai ${friendInput}, tere phone number par Cyber Cell mein complaint aayi hai, is list mein tera naam hai jaldi check kar: ${currentShareUrl}`;
+        currentShareMessage = `😂 Bhai ${friendInput}, Gabru aur Mouse ne tere naam par kya khatarnaak roast banaya hai, jaldi sun: ${currentShareUrl}`;
       }
 
       document.getElementById('generatedUrlInput').value = currentShareUrl;
@@ -696,61 +498,44 @@
     function copyPrankMessage() {
       if (!currentShareMessage) generatePrankLink();
       navigator.clipboard.writeText(currentShareMessage);
-      showToast('✅ Prank Message + Link Copy Ho Gaya! Ab kahin bhi Paste karo!');
-      document.getElementById('copyBtnText').textContent = '✅ Copied!';
+      showToast('✅ Link Copy Ho Gaya!');
     }
 
     async function shareEverywhereNative() {
       if (!currentShareMessage) generatePrankLink();
       if (navigator.share) {
-        try {
-          await navigator.share({
-            title: '⚠️ Private File Alert',
-            text: currentShareMessage,
-            url: currentShareUrl
-          });
-        } catch (err) {
-          copyPrankMessage();
-        }
-      } else {
-        copyPrankMessage();
-      }
+        try { await navigator.share({ title: '🐐 Gabru Prank', text: currentShareMessage, url: currentShareUrl }); }
+        catch (err) { copyPrankMessage(); }
+      } else { copyPrankMessage(); }
     }
 
     function shareOnWhatsApp() {
       if (!currentShareMessage) generatePrankLink();
-      const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(currentShareMessage)}`;
-      window.open(waUrl, '_blank');
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(currentShareMessage)}`, '_blank');
     }
 
     function shareOnInstagramDM() {
       if (!currentShareMessage) generatePrankLink();
       navigator.clipboard.writeText(currentShareMessage);
-      showToast('📸 Link Copy Ho Gaya! Instagram khul raha hai, DM ya Story mein Paste kar do!');
-      setTimeout(() => {
-        window.open('https://www.instagram.com/direct/inbox/', '_blank');
-      }, 900);
+      showToast('📸 Link Copy Ho Gaya! Insta DM mein Paste karo!');
+      setTimeout(() => { window.open('https://www.instagram.com/direct/inbox/', '_blank'); }, 900);
     }
 
     function shareOnTelegram() {
       if (!currentShareMessage) generatePrankLink();
-      const tgUrl = `https://t.me/share/url?url=${encodeURIComponent(currentShareUrl)}&text=${encodeURIComponent(currentShareMessage)}`;
-      window.open(tgUrl, '_blank');
+      window.open(`https://t.me/share/url?url=${encodeURIComponent(currentShareUrl)}&text=${encodeURIComponent(currentShareMessage)}`, '_blank');
     }
 
     function shareOnFacebook() {
       if (!currentShareMessage) generatePrankLink();
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentShareUrl)}&quote=${encodeURIComponent(currentShareMessage)}`;
-      window.open(fbUrl, '_blank');
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentShareUrl)}`, '_blank');
     }
 
     function showToast(msg) {
       const toast = document.getElementById('toastBanner');
       toast.textContent = msg;
       toast.style.opacity = '1';
-      setTimeout(() => {
-        toast.style.opacity = '0';
-      }, 3200);
+      setTimeout(() => { toast.style.opacity = '0'; }, 3000);
     }
   </script>
 </body>
