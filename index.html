@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="hi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Private File Viewer - Secure Link</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            user-select: none;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Screen Shake Animation for Stage 1 & 2 */
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-6px, 4px) rotate(-1.5deg); }
+            40% { transform: translate(6px, -4px) rotate(1.5deg); }
+            60% { transform: translate(-6px, -2px) rotate(-1deg); }
+            80% { transform: translate(6px, 2px) rotate(1deg); }
+        }
+        .shake-active {
+            animation: shake 0.25s infinite;
+        }
+        /* Flashing Red Alert Background */
+        @keyframes redAlert {
+            0%, 100% { background-color: #090a0f; }
+            50% { background-color: #3b0707; }
+        }
+        .alert-bg {
+            animation: redAlert 0.6s infinite;
+        }
+        /* Pulse Glow Button */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7), 0 0 25px rgba(239, 68, 68, 0.6); transform: scale(1); }
+            50% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0), 0 0 35px rgba(239, 68, 68, 0.9); transform: scale(1.03); }
+        }
+        .btn-glow-red {
+            animation: pulseGlow 1.4s infinite;
+        }
+        @keyframes pulseGlowGreen {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7), 0 0 25px rgba(34, 197, 94, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 0 14px rgba(34, 197, 94, 0), 0 0 35px rgba(34, 197, 94, 0.8); transform: scale(1.03); }
+        }
+        .btn-glow-green {
+            animation: pulseGlowGreen 1.4s infinite;
+        }
+        /* Stamp Slam Animation */
+        @keyframes stampSlam {
+            0% { transform: scale(4) rotate(-25deg); opacity: 0; }
+            70% { transform: scale(0.9) rotate(-12deg); opacity: 1; }
+            100% { transform: scale(1) rotate(-12deg); opacity: 1; }
+        }
+        .stamp-anim {
+            animation: stampSlam 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        /* Scanline overlay */
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0, 255, 100, 0.1) 50%, rgba(0, 255, 100, 0.1));
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body id="mainBody" class="min-h-screen flex flex-col justify-between relative">
+
+    <!-- ===================================================================== -->
+    <!-- OWNER DEMO SIMULATOR BAR (Shows how 3 Stages = 3x Ad Views & Earning) -->
+    <!-- Note: Remove this bar or click 'Hide' when putting live if you want,  -->
+    <!-- or keep it hidden from victims automatically!                         -->
+    <!-- ===================================================================== -->
+    <div id="ownerTrackerBar" class="bg-gradient-to-r from-indigo-950 via-purple-900 to-indigo-950 border-b border-purple-500/40 px-3 py-2 text-xs z-50">
+        <div class="max-w-md mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="bg-yellow-400 text-black font-black px-1.5 py-0.5 rounded text-[10px] uppercase">Owner Live Demo</span>
+                <span class="text-purple-200 font-semibold">Stage: <strong id="trackerStage" class="text-white">Creator</strong></span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-black/50 px-2 py-1 rounded border border-emerald-500/40">
+                    <span class="text-gray-300">Ad Views:</span>
+                    <span id="adCountBadge" class="text-emerald-400 font-black ml-1">0</span>
+                </div>
+                <div class="bg-black/50 px-2 py-1 rounded border border-yellow-500/40">
+                    <span class="text-gray-300">3x Boost:</span>
+                    <span id="adMultiplierBadge" class="text-yellow-400 font-black ml-1">1x</span>
+                </div>
+                <button onclick="toggleOwnerBar()" class="text-gray-400 hover:text-white underline text-[11px]">Hide</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TOP STICKY AD SLOT #1 (Paste Adsterra / Monetag 320x50 Banner Here)   -->
+    <!-- ===================================================================== -->
+    <div class="w-full bg-zinc-900/90 border-b border-zinc-800 py-2 px-2 flex justify-center items-center sticky top-0 z-40 backdrop-blur-md">
+        <div id="topAdSlot" onclick="triggerSimulatedDirectLinkAd('Top Banner Ad Clicked')" class="cursor-pointer w-full max-w-[340px] h-[54px] bg-gradient-to-r from-zinc-800 via-zinc-900 to-zinc-800 border border-dashed border-amber-500/50 rounded-lg flex items-center justify-between px-3 hover:border-amber-400 transition">
+            <div class="flex items-center gap-2.5">
+                <span class="bg-amber-500 text-black text-[10px] font-black px-1.5 py-0.5 rounded">AD</span>
+                <div class="text-left">
+                    <p id="topAdHeadline" class="text-xs font-bold text-white leading-tight">🔥 Play Ludo & Win ₹500 Instant UPI!</p>
+                    <p class="text-[10px] text-amber-400">Sponsored • Adsterra / Monetag Slot #1</p>
+                </div>
+            </div>
+            <span class="bg-emerald-500 text-black text-[11px] font-extrabold px-2.5 py-1 rounded-md">OPEN</span>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN APP CONTAINER                                                    -->
+    <!-- ===================================================================== -->
+    <main class="flex-1 flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative">
+
+        <!-- Custom Notification Toast (No alert() used) -->
+        <div id="toastBox" class="fixed top-16 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-extrabold text-xs px-4 py-2.5 rounded-full shadow-2xl z-50 hidden transition-all duration-300 flex items-center gap-2">
+            <span>✅</span>
+            <span id="toastText">Link Copied!</span>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 0: CREATOR MODE (When Follower Opens to Create Prank Link) -->
+        <!-- ================================================================= -->
+        <section id="screenCreator" class="w-full space-y-4">
+            <div class="bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+                <!-- Top Badge -->
+                <div class="flex items-center justify-between mb-3">
+                    <span class="bg-red-500/20 text-red-400 border border-red-500/30 text-[11px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                        3-IN-1 MEGA PRANK TRAP
+                    </span>
+                    <a href="https://instagram.com/gabru.mouse.comedy" target="_blank" class="text-xs font-bold text-amber-400 hover:underline">@gabru.mouse.comedy</a>
+                </div>
+
+                <!-- Gabru & Mouse Header Illustration -->
+                <div class="flex items-center gap-3 bg-zinc-800/60 p-3 rounded-xl border border-zinc-700/60 mb-4">
+                    <div class="flex -space-x-2 shrink-0">
+                        <!-- Gabru Bakra SVG Avatar -->
+                        <div class="w-12 h-12 rounded-full bg-amber-500 border-2 border-zinc-900 flex items-center justify-center text-2xl shadow-lg" title="Gabru Bakra">🐐</div>
+                        <!-- Mouse SVG Avatar -->
+                        <div class="w-12 h-12 rounded-full bg-purple-600 border-2 border-zinc-900 flex items-center justify-center text-2xl shadow-lg" title="Desi Mouse">🐭</div>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-black text-white leading-tight">Dost Ki 3 Baar G*nd Phado! 😂</h1>
+                        <p class="text-xs text-zinc-400 mt-0.5">1 Link mein 3 Khatarnaak Prank ek ke baad ek chalenge!</p>
+                    </div>
+                </div>
+
+                <!-- How the 3 Stages Work Preview -->
+                <div class="grid grid-cols-3 gap-1.5 mb-4 text-center">
+                    <div class="bg-red-950/40 border border-red-500/30 rounded-lg p-2">
+                        <div class="text-base">🚨</div>
+                        <p class="text-[10px] font-bold text-red-300 mt-0.5">1. Fake Chat Leak Hack</p>
+                    </div>
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-lg p-2">
+                        <div class="text-base">🔊</div>
+                        <p class="text-[10px] font-bold text-amber-300 mt-0.5">2. Full Volume Gabru Roast</p>
+                    </div>
+                    <div class="bg-purple-950/40 border border-purple-500/30 rounded-lg p-2">
+                        <div class="text-base">📸</div>
+                        <p class="text-[10px] font-bold text-purple-300 mt-0.5">3. Live Shakal Certified</p>
+                    </div>
+                </div>
+
+                <!-- Step 1: Friend Name -->
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-extrabold text-zinc-300 uppercase tracking-wider mb-1.5">1. Apne Harami Dost Ka Naam Likho:</label>
+                        <input id="creatorFriendName" type="text" placeholder="Eg: Rohit, Sonu, Vikas..." maxlength="22"
+                            class="w-full bg-zinc-950 border-2 border-zinc-700 focus:border-amber-400 rounded-xl px-4 py-3 text-white font-bold text-base outline-none transition"
+                            oninput="updateSharePreview()">
+                    </div>
+
+                    <!-- Step 2: Select Bait Trap -->
+                    <div>
+                        <label class="block text-xs font-extrabold text-zinc-300 uppercase tracking-wider mb-1.5">2. Dost Ko Fasane Ka Bahana (Bait) Chuno:</label>
+                        <select id="creatorBaitType" onchange="updateSharePreview()"
+                            class="w-full bg-zinc-950 border-2 border-zinc-700 focus:border-amber-400 rounded-xl px-3.5 py-3 text-white font-semibold text-sm outline-none">
+                            <option value="leak">📂 "Teri Leaked Video/Photo Kisne Daal Di! Jaldi Delete Kar"</option>
+                            <option value="crush">❤️ "Teri Crush Ne Tere Naam Ka Secret Confession Likha Hai"</option>
+                            <option value="upi">💸 "Google Pay ₹500 Scratch Card Mila Hai Tere Naam Par"</option>
+                            <option value="fir">🚓 "Cyber Police Complaint List Mein Tera Naam Aaya Hai"</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Instant Live Preview Button for Owner/Creator -->
+                <div class="mt-4 pt-3 border-t border-zinc-800 flex flex-col gap-2">
+                    <button onclick="startVictimPrankFromCreator()"
+                        class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:opacity-95 text-black font-black py-3.5 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm tracking-wide active:scale-95 transition">
+                        <span>▶️</span>
+                        <span>KHUD TEST KARO (DEKHO DOST KE SATH KYA HOGA)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- UNIVERSAL MULTI-PLATFORM SHARE BOX -->
+            <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-xl space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xs font-black uppercase tracking-wider text-emerald-400">🚀 3. Kisi Bhi App Par Dost Ko Bhejo:</h2>
+                    <span class="text-[10px] text-zinc-400">100% Free</span>
+                </div>
+
+                <!-- Message Preview Box -->
+                <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-300 font-medium leading-relaxed break-words" id="shareMessagePreview">
+                    Bhai Rohit, teri private photo aur chat is page par kisne leak kar di? 😱 Jaldi khol kar delete karwa warna sab dekh lenge:
+                </div>
+
+                <!-- Share Buttons Grid (WhatsApp, Instagram, Universal All-Apps, Facebook, Copy) -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <!-- 1. Universal Share (Opens Phone Share Sheet: Insta DM, Snap, Telegram, etc.) -->
+                    <button onclick="shareUniversal('creator')"
+                        class="col-span-2 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow-lg active:scale-95 transition">
+                        <span>📲</span>
+                        <span>Share on Instagram / Snapchat / All Apps</span>
+                    </button>
+
+                    <!-- 2. WhatsApp Direct -->
+                    <button onclick="shareWhatsApp('creator')"
+                        class="bg-[#25D366] hover:bg-[#20bd5a] text-black font-black py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-md active:scale-95 transition">
+                        <span>💬</span>
+                        <span>WhatsApp Bhejo</span>
+                    </button>
+
+                    <!-- 3. Instagram DM Copy & Open -->
+                    <button onclick="shareInstagram('creator')"
+                        class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-md active:scale-95 transition">
+                        <span>📸</span>
+                        <span>Insta DM / Story</span>
+                    </button>
+
+                    <!-- 4. Facebook Share -->
+                    <button onclick="shareFacebook('creator')"
+                        class="bg-[#1877F2] text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs active:scale-95 transition">
+                        <span>📘</span>
+                        <span>Facebook</span>
+                    </button>
+
+                    <!-- 5. Telegram / Copy Link -->
+                    <button onclick="copyPrankLink('creator')"
+                        class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs active:scale-95 transition">
+                        <span>📋</span>
+                        <span>Copy Trap Link</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- SCREEN 1 (STAGE 0 BAIT): INNOCENT FILE UNLOCK SCREEN FOR VICTIM   -->
+        <!-- ================================================================= -->
+        <section id="screenBait" class="w-full hidden space-y-4">
+            <div class="bg-zinc-900 border-2 border-red-500/40 rounded-2xl p-5 text-center shadow-2xl space-y-4">
+                <div class="inline-flex items-center gap-1.5 bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-full text-xs font-extrabold">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <span>PRIVATE FILE DETECTED</span>
+                </div>
+
+                <!-- File Card -->
+                <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-4 space-y-2">
+                    <div class="text-4xl">📁</div>
+                    <h2 id="baitTitleText" class="text-lg font-black text-white">
+                        Rohit_Private_Leaked_Video.mp4
+                    </h2>
+                    <p id="baitSubText" class="text-xs text-zinc-400">
+                        Size: 14.8 MB • Uploaded 12 mins ago • Status: <span class="text-red-400 font-bold">Publicly Visible</span>
+                    </p>
+                </div>
+
+                <p class="text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5 font-medium">
+                    ⚠️ Yeh file 15 minute mein sabhi WhatsApp groups mein auto-share ho jayegi. Dekhne ya Delete karne ke liye neeche click karein:
+                </p>
+
+                <!-- Clicking this triggers Ad #1 and Launches Prank Stage 1 -->
+                <button onclick="launchStage1Hack()"
+                    class="w-full bg-gradient-to-r from-red-600 to-orange-600 text-white font-black py-4 px-5 rounded-xl text-base tracking-wide btn-glow-red flex items-center justify-center gap-2">
+                    <span>🔓</span>
+                    <span>OPEN & DELETE MY FILE NOW</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- STAGE 1 (PRANK 1): FAKE WHATSAPP & GALLERY HACK TERMINAL          -->
+        <!-- (Suspense Hook at end forces user to click to Stage 2 -> Ad #2)   -->
+        <!-- ================================================================= -->
+        <section id="screenStage1" class="w-full hidden space-y-4">
+            <div class="bg-black border-2 border-red-600 rounded-2xl p-4 shadow-2xl scanline relative overflow-hidden">
+                <!-- Flashing Top Warning -->
+                <div class="bg-red-600 text-white font-black text-xs px-3 py-2 rounded-lg flex items-center justify-between mb-3 animate-pulse">
+                    <span>⚠️ SYSTEM SECURITY BREACH!</span>
+                    <span id="hackTimer" class="mono">00:08</span>
+                </div>
+
+                <h2 class="text-lg font-black text-red-500 uppercase tracking-tight">
+                    <span class="victimNameSpan">Rohit</span> Ka Phone Hack Ho Gaya Hai!
+                </h2>
+                <p class="text-xs text-zinc-300 mt-1 mb-3">
+                    Remote Server <span class="mono text-emerald-400">192.168.43.99</span> aapka personal data download kar raha hai...
+                </p>
+
+                <!-- Terminal Log Box -->
+                <div id="terminalLogs" class="bg-zinc-950 border border-emerald-500/40 rounded-xl p-3 h-36 overflow-y-auto mono text-[11px] text-emerald-400 space-y-1.5 text-left mb-4">
+                    <p>> Connecting to <span class="victimNameSpan">Rohit</span>'s device...</p>
+                </div>
+
+                <!-- Progress Bars -->
+                <div class="space-y-3 mb-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-red-400">💬 WhatsApp Secret Crush Chats</span>
+                            <span id="progText1" class="mono text-white">0%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-zinc-800 rounded-full overflow-hidden">
+                            <div id="progBar1" class="h-full bg-red-500 transition-all duration-150" style="width: 10%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-bold mb-1">
+                            <span class="text-amber-400">🖼️ Hidden Gallery Photos & Videos</span>
+                            <span id="progText2" class="mono text-white">0%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-zinc-800 rounded-full overflow-hidden">
+                            <div id="progBar2" class="h-full bg-amber-500 transition-all duration-150" style="width: 5%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUSPENSE HOOK TO MOVE TO STAGE 2 (MULTIPLIES AD IMPRESSIONS BY 2X) -->
+                <div id="stage1NextBox" class="bg-red-950/90 border-2 border-yellow-400 rounded-xl p-3 text-center space-y-2.5">
+                    <p class="text-xs font-extrabold text-yellow-300">
+                        🚨 98% DATA UPLOADED! Agar apne WhatsApp Group mein photo jane se rokna hai toh turant STOP dabao!
+                    </p>
+                    <button onclick="launchStage2GabruRoast()"
+                        class="w-full bg-gradient-to-r from-yellow-400 via-amber-500 to-red-500 text-black font-black py-3.5 px-4 rounded-xl text-sm tracking-wide btn-glow-red uppercase">
+                        🛑 EMERGENCY STOP UPLOAD (CLICK FAST!)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- STAGE 2 (PRANK 2): GABRU & MOUSE FULL VOLUME DESI ROAST           -->
+        <!-- (Suspense Hook at end forces user to click to Stage 3 -> Ad #3)   -->
+        <!-- ================================================================= -->
+        <section id="screenStage2" class="w-full hidden space-y-4">
+            <div class="bg-gradient-to-b from-purple-950 via-zinc-900 to-zinc-950 border-2 border-amber-400 rounded-2xl p-5 text-center shadow-2xl space-y-4 relative overflow-hidden">
+
+                <!-- Volume Indicator -->
+                <div class="flex items-center justify-between bg-amber-500/20 border border-amber-400/40 rounded-lg px-3 py-1.5 text-xs font-black text-amber-300">
+                    <span>🔊 VOLUME: 100% MAX LOCKED</span>
+                    <span class="animate-ping">📢</span>
+                </div>
+
+                <!-- Animated Gabru & Mouse Avatars -->
+                <div class="flex justify-center items-center gap-4 py-2">
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-600 border-4 border-white shadow-xl flex items-center justify-center text-5xl animate-bounce">
+                            🐐
+                        </div>
+                        <span class="mt-1.5 bg-amber-400 text-black font-black text-[11px] px-2 py-0.5 rounded">GABRU BAKRA</span>
+                    </div>
+                    <div class="text-2xl font-black text-red-500">⚡</div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 border-4 border-white shadow-xl flex items-center justify-center text-5xl animate-bounce" style="animation-delay: 0.15s;">
+                            🐭
+                        </div>
+                        <span class="mt-1.5 bg-purple-400 text-black font-black text-[11px] px-2 py-0.5 rounded">DESI MOUSE</span>
+                    </div>
+                </div>
+
+                <!-- Speech Bubble with Friend's Name -->
+                <div class="bg-zinc-950 border-2 border-pink-500 rounded-2xl p-4 relative">
+                    <p id="gabruRoastText" class="text-base font-black text-white leading-snug">
+                        "Abe ओए <span class="victimNameSpan text-amber-400">Rohit</span>! 😂 Darr ke maare g*nd phat gayi na teri?! WhatsApp chat bachane bhaaga aaya bada!"
+                    </p>
+                    <button onclick="speakDesiRoastAgain()" class="mt-2 inline-flex items-center gap-1 text-[11px] text-pink-400 font-bold underline">
+                        🔄 Phir Se Suno Gabru Ki Aawaz
+                    </button>
+                </div>
+
+                <!-- SUSPENSE CLIFFHANGER FOR STAGE 3 (FORCES 3RD CLICK & 3RD AD VIEW!) -->
+                <div class="bg-red-950/90 border-2 border-red-500 rounded-xl p-3.5 space-y-2.5 text-left">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl animate-pulse">📸</span>
+                        <p class="text-xs font-black text-red-300 uppercase">
+                            RUK BETA! KHEL ABHI KHATAM NAHI HUA!
+                        </p>
+                    </div>
+                    <p class="text-xs text-zinc-200 leading-relaxed">
+                        Jab tu "STOP" button daba raha tha, tab tere <strong>Front Camera</strong> se teri dari hui shakal ki photo khinch gayi hai aur tera <strong>"Harami Certificate"</strong> ban gaya hai!
+                    </p>
+                    <button onclick="launchStage3CameraStamp()"
+                        class="w-full bg-gradient-to-r from-emerald-400 via-green-500 to-teal-500 text-black font-black py-3.5 px-4 rounded-xl text-sm tracking-wide btn-glow-green flex items-center justify-center gap-2 uppercase">
+                        <span>👁️</span>
+                        <span>APNI SHAKAL DEKHO & PHOTO DELETE KARO!</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- STAGE 3 (PRANK 3): LIVE CAMERA MUGSHOT + VIRAL SHARE LOOP         -->
+        <!-- ================================================================= -->
+        <section id="screenStage3" class="w-full hidden space-y-4">
+            <!-- Certified Mugshot Card -->
+            <div class="bg-zinc-900 border-2 border-amber-400 rounded-2xl p-4 text-center shadow-2xl space-y-3 relative overflow-hidden">
+                <div class="bg-amber-400 text-black font-black text-xs py-1 px-3 rounded-md uppercase tracking-widest">
+                    🏆 OFFICIAL GABRU & MOUSE REPORT CARD 🏆
+                </div>
+
+                <!-- Live Camera or Funny Avatar Frame -->
+                <div class="relative w-56 h-56 mx-auto rounded-2xl overflow-hidden border-4 border-red-500 bg-zinc-950 shadow-inner flex items-center justify-center">
+                    <!-- Live Front Camera Video -->
+                    <video id="victimCameraFeed" autoplay playsinline muted class="w-full h-full object-cover transform scale-x-[-1] hidden"></video>
+
+                    <!-- Fallback Funny Bakra/Monkey Mugshot if Camera Denied or Desktop -->
+                    <div id="cameraFallbackAvatar" class="flex flex-col items-center justify-center p-4">
+                        <div class="text-7xl animate-bounce">🐵</div>
+                        <p class="text-xs font-extrabold text-amber-300 mt-2">Live Scan: <span class="victimNameSpan">Rohit</span></p>
+                        <p class="text-[10px] text-zinc-400">(Camera Chhupane Se Shakal Nahi Badlegi 😂)</p>
+                    </div>
+
+                    <!-- Red Target Crosshair Overlay -->
+                    <div class="absolute inset-2 border border-dashed border-red-500/60 rounded-xl pointer-events-none"></div>
+
+                    <!-- SLAM STAMP OVERLAY -->
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 w-[92%] bg-red-600/95 border-2 border-white text-white font-black py-1.5 px-2 rounded shadow-2xl stamp-anim">
+                        <p class="text-xs uppercase tracking-wider">100% CERTIFIED CH*TIYA DOST 😂</p>
+                        <p class="text-[9px] text-yellow-200">KAT GAYA BETA! BY GABRU & MOUSE</p>
+                    </div>
+                </div>
+
+                <!-- Harami Stats -->
+                <div class="grid grid-cols-3 gap-2 text-center bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+                    <div>
+                        <p class="text-[10px] text-zinc-400">Naam</p>
+                        <p class="victimNameSpan text-xs font-black text-white truncate">Rohit</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-zinc-400">Harami Score</p>
+                        <p class="text-xs font-black text-red-400">99.9% 🔥</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-zinc-400">Darr Level</p>
+                        <p class="text-xs font-black text-amber-400">Phat Gayi 😂</p>
+                    </div>
+                </div>
+
+                <p class="text-xs text-zinc-300 font-semibold">
+                    😂 Tera toh 3 baar popat ban gaya! Ab chup-chaap apne kisi dusre kamine dost ka naam likh aur uski g*nd phad! 👇
+                </p>
+            </div>
+
+            <!-- VIRAL LOOP: CREATE LINK FOR NEXT FRIEND RIGHT HERE -->
+            <div class="bg-gradient-to-b from-zinc-900 to-zinc-950 border-2 border-emerald-500/60 rounded-2xl p-4 shadow-2xl space-y-3">
+                <h3 class="text-sm font-black text-emerald-400 uppercase flex items-center gap-1.5">
+                    <span>🔥</span>
+                    <span>Ab Apne Dost Ko Murga Banao (10 Sec Mein):</span>
+                </h3>
+
+                <input id="victimNextFriendName" type="text" placeholder="Apne Dost Ka Naam Likho (Eg: Aman)..." maxlength="22"
+                    class="w-full bg-zinc-950 border-2 border-zinc-700 focus:border-emerald-400 rounded-xl px-4 py-3 text-white font-bold text-sm outline-none">
+
+                <select id="victimNextBaitType"
+                    class="w-full bg-zinc-950 border-2 border-zinc-700 rounded-xl px-3 py-2.5 text-white font-semibold text-xs outline-none">
+                    <option value="leak">📂 Bait: "Teri Private Video Leak Ho Gayi!"</option>
+                    <option value="crush">❤️ Bait: "Teri Crush Ne Secret Message Bheja Hai"</option>
+                    <option value="upi">💸 Bait: "₹500 Google Pay Cashback Mila Hai"</option>
+                    <option value="fir">🚓 Bait: "Cyber Police Mein Tera Naam Aaya Hai"</option>
+                </select>
+
+                <!-- All-Platform Share Buttons -->
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="shareUniversal('victim')"
+                        class="col-span-2 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 text-white font-black py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-xs shadow-lg active:scale-95 transition">
+                        <span>📲</span>
+                        <span>SHARE ON INSTAGRAM / SNAP / ALL APPS</span>
+                    </button>
+
+                    <button onclick="shareWhatsApp('victim')"
+                        class="bg-[#25D366] text-black font-black py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-md active:scale-95 transition">
+                        <span>💬</span>
+                        <span>WhatsApp</span>
+                    </button>
+
+                    <button onclick="shareInstagram('victim')"
+                        class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-black py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs shadow-md active:scale-95 transition">
+                        <span>📸</span>
+                        <span>Insta DM / Story</span>
+                    </button>
+
+                    <button onclick="shareFacebook('victim')"
+                        class="bg-[#1877F2] text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs active:scale-95 transition">
+                        <span>📘</span>
+                        <span>Facebook</span>
+                    </button>
+
+                    <button onclick="copyPrankLink('victim')"
+                        class="bg-zinc-800 border border-zinc-600 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs active:scale-95 transition">
+                        <span>📋</span>
+                        <span>Copy Link</span>
+                    </button>
+                </div>
+
+                <!-- Follow Instagram CTA -->
+                <a href="https://instagram.com/gabru.mouse.comedy" target="_blank"
+                    class="mt-2 w-full bg-zinc-800/80 hover:bg-zinc-800 border border-amber-500/40 rounded-xl p-2.5 flex items-center justify-between text-xs transition">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🐐🐭</span>
+                        <div class="text-left">
+                            <p class="font-black text-white">Follow @gabru.mouse.comedy</p>
+                            <p class="text-[10px] text-amber-400">Roz Nayi Uncensored Comedy Reels Ke Liye!</p>
+                        </div>
+                    </div>
+                    <span class="bg-amber-400 text-black font-black px-2.5 py-1 rounded-lg text-[11px]">FOLLOW</span>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- MIDDLE RECTANGLE AD SLOT #2 (Refreshes on Every Stage = 3x Views) -->
+        <!-- Paste your Adsterra 300x250 Banner Script inside this div         -->
+        <!-- ================================================================= -->
+        <div class="w-full mt-5">
+            <div id="midAdSlot" onclick="triggerSimulatedDirectLinkAd('Middle Rectangle Ad Clicked')"
+                class="cursor-pointer w-full bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-900 border border-dashed border-emerald-500/40 rounded-2xl p-3.5 text-center shadow-lg hover:border-emerald-400 transition">
+                <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Sponsored Advertisement</span>
+                    <span id="adRefreshBadge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2 py-0.5 rounded">Ad View #1</span>
+                </div>
+                <p id="midAdHeadline" class="text-sm font-black text-white">
+                    🎁 Download WinZO & Claim ₹550 Free Bonus Instantly!
+                </p>
+                <p class="text-[11px] text-zinc-400 mt-0.5">
+                    (Yahan Aapka Adsterra / Monetag 300x250 Ad Code Lagega — Har Stage Par Refresh Hoga)
+                </p>
+                <div class="mt-2 inline-block bg-emerald-500 text-black font-black text-xs px-4 py-1.5 rounded-lg">
+                    INSTALL & CLAIM NOW →
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- BOTTOM STICKY AD SLOT #3 + FOOTER                                     -->
+    <!-- ===================================================================== -->
+    <footer class="w-full bg-zinc-950 border-t border-zinc-900 py-3 px-4 text-center text-[11px] text-zinc-500">
+        <p>Made for Entertainment & Fun by <strong class="text-amber-400">@gabru.mouse.comedy</strong> • No real data is collected.</p>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- COMPLETE JAVASCRIPT ENGINE (3-Stage Chaining + Audio + Universal Share)-->
+    <!-- ===================================================================== -->
+    <script>
+        /* -------------------------------------------------------------------
+         * 1. OPTIONAL CUSTOM CONFIGURATION FOR PAGE OWNER
+         * -------------------------------------------------------------------
+         * Bhai, jab aap Adsterra ya Monetag ka account bana lo, toh apna
+         * "Direct Link" URL neeche DIRECT_AD_LINK mein paste kar dena.
+         * Aur agar apni khud ki Gabru MP3 aawaz lagani ho, toh CUSTOM_GABRU_MP3 mein link daal dena!
+         */
+        const DIRECT_AD_LINK = ""; // Example: "https://your-adsterra-direct-link.com/xyz"
+        const CUSTOM_GABRU_MP3 = ""; // Optional: Put link to your own MP3 file if you want
+
+        // State Variables
+        let victimName = "Rohit";
+        let baitType = "leak";
+        let totalAdImpressions = 0;
+        let currentStageNumber = 0;
+        let audioCtx = null;
+        let alarmInterval = null;
+        let hackInterval = null;
+
+        // Bait Headlines Dictionary
+        const BAIT_CONFIG = {
+            leak: {
+                fileTitle: (name) => `${name}_Private_Leaked_Video.mp4`,
+                fileSub: "Size: 14.8 MB • Uploaded 9 mins ago • Publicly Visible",
+                shareText: (name, url) => `😱 Bhai ${name}, teri private photo aur chat is page par kisne leak kar di?! Jaldi khol kar delete karwa warna poore group mein phail jayegi:\n👉 ${url}`
+            },
+            crush: {
+                fileTitle: (name) => `Secret_Confession_For_${name}.pdf`,
+                fileSub: "Size: 2.4 MB • Sent Anonymously • 1 Audio Attached",
+                shareText: (name, url) => `❤️ Oye ${name}! Kisi ne tere naam ka secret love confession aur voice note daala hai yahan, chupke se dekh le kaun hai:\n👉 ${url}`
+            },
+            upi: {
+                fileTitle: (name) => `₹500_UPI_Cashback_For_${name}.apk`,
+                fileSub: "Verified Reward • Expires in 10 Minutes",
+                shareText: (name, url) => `💸 Bhai ${name}, tere number par ₹500 ka Direct UPI Scratch Card nikla hai, maine abhi claim kiya, tu bhi jaldi kar:\n👉 ${url}`
+            },
+            fir: {
+                fileTitle: (name) => `Cyber_Police_Notice_${name}.pdf`,
+                fileSub: "Case ID: #IN-99412 • Status: Action Pending",
+                shareText: (name, url) => `🚓 Abe ${name}, tune raat ko kya kaand kiya tha? Cyber Cell ki list mein tera naam aur photo aayi hai, jaldi check kar:\n👉 ${url}`
+            }
+        };
+
+        // Simulated Ad Headlines so Owner can see Ads refreshing at every stage
+        const SAMPLE_ADS = [
+            { top: "🔥 Play Ludo & Win ₹500 Instant UPI!", mid: "🎁 Download WinZO & Claim ₹550 Free Bonus Instantly!" },
+            { top: "⚡ Jio/Airtel 2GB Free Data Claim Now!", mid: "💰 Spin & Win ₹1,000 PayTM Cash Direct in Bank!" },
+            { top: "🏏 IPL Fantasy: ₹49 Lagao, ₹1 Crore Jeeto!", mid: "🔥 Secret Dating App Near Your Location - Free Join!" },
+            { top: "🎮 New GTA Desi Mod Download (25 MB)!", mid: "🚀 Earn ₹800/Day From Mobile Without Investment!" }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 2. INITIALIZATION & URL PARAMETER DETECTION
+         * ------------------------------------------------------------------- */
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            const urlName = params.get("name");
+            const urlBait = params.get("bait");
+
+            // Count initial page load Ad Impression (2 banner slots visible)
+            incrementAdImpressions(2, "Creator Page Loaded", "1x");
+            updateSharePreview();
+
+            // If URL has ?name=XYZ, immediately open Victim Bait Screen (Stage 0)
+            if (urlName && urlName.trim() !== "") {
+                victimName = sanitizeName(urlName);
+                baitType = BAIT_CONFIG[urlBait] ? urlBait : "leak";
+                setupVictimBaitScreen();
+            }
+        };
+
+        function sanitizeName(str) {
+            const clean = str.replace(/[<>]/g, "").trim();
+            return clean ? clean.charAt(0).toUpperCase() + clean.slice(1) : "Dost";
+        }
+
+        function updateAllVictimNameSpans() {
+            document.querySelectorAll(".victimNameSpan").forEach(el => {
+                el.textContent = victimName;
+            });
+        }
+
+        /* -------------------------------------------------------------------
+         * 3. AD IMPRESSION & 3X MULTIPLIER ENGINE
+         * ------------------------------------------------------------------- */
+        function incrementAdImpressions(count, stageLabel, multiplierLabel) {
+            totalAdImpressions += count;
+            document.getElementById("adCountBadge").textContent = totalAdImpressions;
+            document.getElementById("trackerStage").textContent = stageLabel;
+            document.getElementById("adMultiplierBadge").textContent = multiplierLabel;
+
+            // Rotate Ad Text to show how every stage refreshes ad inventory
+            const adPick = SAMPLE_ADS[currentStageNumber % SAMPLE_ADS.length];
+            document.getElementById("topAdHeadline").textContent = adPick.top;
+            document.getElementById("midAdHeadline").textContent = adPick.mid;
+            document.getElementById("adRefreshBadge").textContent = `Ad Refreshed • Stage ${currentStageNumber}`;
+
+            // If Page Owner pasted a real Adsterra/Monetag Direct Link, open it on stage transition
+            if (DIRECT_AD_LINK && currentStageNumber > 0) {
+                window.open(DIRECT_AD_LINK, "_blank");
+            }
+        }
+
+        function triggerSimulatedDirectLinkAd(sourceName) {
+            incrementAdImpressions(1, "Ad Clicked!", "BONUS 💰");
+            if (DIRECT_AD_LINK) {
+                window.open(DIRECT_AD_LINK, "_blank");
+            } else {
+                showToast(`💰 ${sourceName}! (Jab aap Adsterra code lagaoge toh is click ka paisa milega)`);
+            }
+        }
+
+        function toggleOwnerBar() {
+            document.getElementById("ownerTrackerBar").classList.add("hidden");
+        }
+
+        /* -------------------------------------------------------------------
+         * 4. STAGE TRANSITIONS (STAGE 0 -> STAGE 1 -> STAGE 2 -> STAGE 3)
+         * ------------------------------------------------------------------- */
+
+        // Let Creator test the full 3-stage prank immediately
+        function startVictimPrankFromCreator() {
+            const inputName = document.getElementById("creatorFriendName").value;
+            victimName = sanitizeName(inputName || "Rohit");
+            baitType = document.getElementById("creatorBaitType").value;
+            setupVictimBaitScreen();
+        }
+
+        // Show Screen 1 (Innocent File Bait)
+        function setupVictimBaitScreen() {
+            currentStageNumber = 0;
+            updateAllVictimNameSpans();
+            const cfg = BAIT_CONFIG[baitType] || BAIT_CONFIG.leak;
+            document.getElementById("baitTitleText").textContent = cfg.fileTitle(victimName);
+            document.getElementById("baitSubText").textContent = cfg.fileSub;
+
+            hideAllScreens();
+            document.getElementById("screenBait").classList.remove("hidden");
+            incrementAdImpressions(2, "Bait Screen", "1x");
+        }
+
+        // STAGE 1: Fake WhatsApp & Gallery Hack Scanner
+        function launchStage1Hack() {
+            currentStageNumber = 1;
+            hideAllScreens();
+            document.getElementById("screenStage1").classList.remove("hidden");
+            document.getElementById("mainBody").classList.add("alert-bg", "shake-active");
+
+            // 1st Stage Click = +3 Ad Impressions (Top Banner + Mid Banner + Direct Link Hook)
+            incrementAdImpressions(3, "Prank 1: Hack", "1.5x 🔥");
+
+            // Trigger phone vibration if supported
+            if (navigator.vibrate) {
+                navigator.vibrate([300, 100, 300, 100, 500]);
+            }
+
+            // Start Cyber Siren Audio
+            startCyberAlarmSound();
+
+            // Run Fake Terminal & Progress Bars
+            const logs = [
+                `> Accessing ${victimName}'s WhatsApp Database...`,
+                `> Found 42 Late-Night Chats & Voice Notes...`,
+                `> Exporting Hidden Camera Folder (DCIM/Private)...`,
+                `> Compressing ${victimName}_Secrets.zip (94%)...`,
+                `> Preparing to post in All WhatsApp Groups...`,
+                `> WARNING: Upload almost complete! Press STOP now!`
+            ];
+            const logBox = document.getElementById("terminalLogs");
+            logBox.innerHTML = "";
+            let p1 = 12;
+            let p2 = 8;
+            let logIndex = 0;
+            let secLeft = 8;
+
+            clearInterval(hackInterval);
+            hackInterval = setInterval(() => {
+                p1 = Math.min(99, p1 + Math.floor(Math.random() * 16) + 8);
+                p2 = Math.min(98, p2 + Math.floor(Math.random() * 15) + 7);
+                document.getElementById("progBar1").style.width = p1 + "%";
+                document.getElementById("progText1").textContent = p1 + "%";
+                document.getElementById("progBar2").style.width = p2 + "%";
+                document.getElementById("progText2").textContent = p2 + "%";
+
+                if (logIndex < logs.length) {
+                    const p = document.createElement("p");
+                    p.textContent = logs[logIndex++];
+                    logBox.appendChild(p);
+                    logBox.scrollTop = logBox.scrollHeight;
+                }
+
+                if (secLeft > 1) {
+                    secLeft--;
+                    document.getElementById("hackTimer").textContent = `00:0${secLeft}`;
+                }
+            }, 650);
+        }
+
+        // STAGE 2: Gabru & Mouse Full-Volume Desi Roast
+        function launchStage2GabruRoast() {
+            currentStageNumber = 2;
+            clearInterval(hackInterval);
+            stopCyberAlarmSound();
+
+            hideAllScreens();
+            document.getElementById("screenStage2").classList.remove("hidden");
+
+            // 2nd Stage Click = +3 More Ad Impressions (2x Revenue Multiplier)
+            incrementAdImpressions(3, "Prank 2: Gabru Roast", "2x 🚀");
+
+            if (navigator.vibrate) {
+                navigator.vibrate([500, 150, 500]);
+            }
+
+            // Set personalized funny Hindi roast text
+            const roastLines = [
+                `"Abe ओए ${victimName}! 😂 Darr ke maare g*nd phat gayi na teri?! WhatsApp chat bachane bhaaga aaya bada!"`,
+                `"Oye ${victimName} ch*tiye! 😂 Kaisa laga Gabru aur Mouse ka jhatka? Abhi toh teri dari hui shakal ki photo bhi khinch li humne!"`
+            ];
+            document.getElementById("gabruRoastText").innerHTML = roastLines[0];
+
+            // Play Funny Horn + Speak Desi Roast with Friend's Name
+            playFunnyCartoonHorn();
+            setTimeout(() => {
+                speakDesiRoastAgain();
+            }, 500);
+        }
+
+        // STAGE 3: Live Camera Mugshot + Certified Stamp + Viral Share Loop
+        async function launchStage3CameraStamp() {
+            currentStageNumber = 3;
+            stopCyberAlarmSound();
+            document.getElementById("mainBody").classList.remove("alert-bg", "shake-active");
+
+            hideAllScreens();
+            document.getElementById("screenStage3").classList.remove("hidden");
+
+            // 3rd Stage Click = +3 More Ad Impressions (Full 3x Revenue Multiplier Achieved!)
+            incrementAdImpressions(3, "Prank 3: Certified + Share", "3X MAX 💰");
+
+            // Play Laughing / Stamp Sound Effect
+            playStampAndLaughSound();
+
+            // Attempt to open Victim's Front Camera for the Mugshot Frame (Graceful fallback if denied)
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: "user" },
+                        audio: false
+                    });
+                    const videoEl = document.getElementById("victimCameraFeed");
+                    videoEl.srcObject = stream;
+                    videoEl.classList.remove("hidden");
+                    document.getElementById("cameraFallbackAvatar").classList.add("hidden");
+                }
+            } catch (err) {
+                // If user blocks camera or on non-HTTPS preview, show funny animated Monkey/Bakra Mugshot
+                document.getElementById("victimCameraFeed").classList.add("hidden");
+                document.getElementById("cameraFallbackAvatar").classList.remove("hidden");
+            }
+        }
+
+        function hideAllScreens() {
+            document.getElementById("screenCreator").classList.add("hidden");
+            document.getElementById("screenBait").classList.add("hidden");
+            document.getElementById("screenStage1").classList.add("hidden");
+            document.getElementById("screenStage2").classList.add("hidden");
+            document.getElementById("screenStage3").classList.add("hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. WEB AUDIO SYNTHESIZER & HINDI VOICE ROAST (Works 100% Without External Files)
+         * ------------------------------------------------------------------- */
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === "suspended") {
+                audioCtx.resume();
+            }
+        }
+
+        function startCyberAlarmSound() {
+            try {
+                initAudio();
+                stopCyberAlarmSound();
+                let high = true;
+                alarmInterval = setInterval(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(high ? 880 : 520, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.28);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.28);
+                    high = !high;
+                }, 320);
+            } catch (e) {}
+        }
+
+        function stopCyberAlarmSound() {
+            if (alarmInterval) {
+                clearInterval(alarmInterval);
+                alarmInterval = null;
+            }
+        }
+
+        function playFunnyCartoonHorn() {
+            try {
+                initAudio();
+                const freqs = [440, 587, 330, 659];
+                freqs.forEach((f, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = "square";
+                    osc.frequency.setValueAtTime(f, audioCtx.currentTime + idx * 0.11);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.11);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.11 + 0.1);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + idx * 0.11);
+                    osc.stop(audioCtx.currentTime + idx * 0.11 + 0.1);
+                });
+            } catch (e) {}
+        }
+
+        function playStampAndLaughSound() {
+            try {
+                initAudio();
+                // Descending comical trombone notes
+                const notes = [523.25, 493.88, 466.16, 392.00];
+                notes.forEach((n, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(n, audioCtx.currentTime + i * 0.18);
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime + i * 0.18);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.18 + 0.16);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + i * 0.18);
+                    osc.stop(audioCtx.currentTime + i * 0.18 + 0.16);
+                });
+            } catch (e) {}
+        }
+
+        // Speaks the Friend's Name out loud in Hindi/Desi style (or plays custom MP3 if provided)
+        function speakDesiRoastAgain() {
+            if (CUSTOM_GABRU_MP3) {
+                const audio = new Audio(CUSTOM_GABRU_MP3);
+                audio.play().catch(() => {});
+                return;
+            }
+            if ("speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(
+                    `Abe oye ${victimName}! Darr ke maare phat gayi na teri? WhatsApp chat bachane bhaaga aaya bada! Ab neeche click kar ke apni dari hui shakal dekh!`
+                );
+                msg.lang = "hi-IN";
+                msg.pitch = 1.25;
+                msg.rate = 1.05;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. UNIVERSAL MULTI-PLATFORM SHARE ENGINE (WhatsApp, Insta, FB, All Apps)
+         * ------------------------------------------------------------------- */
+        function getSharePayload(mode) {
+            let friend = "Rohit";
+            let selectedBait = "leak";
+
+            if (mode === "creator") {
+                friend = sanitizeName(document.getElementById("creatorFriendName").value || "Rohit");
+                selectedBait = document.getElementById("creatorBaitType").value;
+            } else {
+                friend = sanitizeName(document.getElementById("victimNextFriendName").value || "Aman");
+                selectedBait = document.getElementById("victimNextBaitType").value;
+            }
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            const customUrl = `${baseUrl}?name=${encodeURIComponent(friend)}&bait=${encodeURIComponent(selectedBait)}`;
+            const cfg = BAIT_CONFIG[selectedBait] || BAIT_CONFIG.leak;
+            const fullMessage = cfg.shareText(friend, customUrl);
+
+            return { friend, customUrl, fullMessage };
+        }
+
+        function updateSharePreview() {
+            const payload = getSharePayload("creator");
+            document.getElementById("shareMessagePreview").textContent = payload.fullMessage;
+        }
+
+        // 1. Universal Share (Opens Native Android/iOS Share Sheet: Instagram DM, Snapchat, Telegram, SMS, etc.)
+        async function shareUniversal(mode) {
+            const { friend, customUrl, fullMessage } = getSharePayload(mode);
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `${friend}'s Private File`,
+                        text: fullMessage,
+                        url: customUrl
+                    });
+                    showToast("🔥 Shared Successfully!");
+                    return;
+                } catch (err) {}
+            }
+            // Fallback if desktop browser doesn't support navigator.share
+            copyTextToClipboard(fullMessage);
+            showToast("📋 Link & Message Copy Ho Gaya! Ab Kisi Bhi App Mein Paste Kar Do!");
+        }
+
+        // 2. Direct WhatsApp Share
+        function shareWhatsApp(mode) {
+            const { fullMessage } = getSharePayload(mode);
+            const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullMessage)}`;
+            window.open(waUrl, "_blank");
+        }
+
+        // 3. Instagram DM / Story Share (Copies bait message + opens Instagram)
+        function shareInstagram(mode) {
+            const { fullMessage } = getSharePayload(mode);
+            copyTextToClipboard(fullMessage);
+            showToast("📸 Link Copy Ho Gaya! Ab Instagram DM ya Story Mein Paste Kar Do!");
+            setTimeout(() => {
+                window.open("https://www.instagram.com/", "_blank");
+            }, 900);
+        }
+
+        // 4. Facebook Share
+        function shareFacebook(mode) {
+            const { customUrl, fullMessage } = getSharePayload(mode);
+            copyTextToClipboard(fullMessage);
+            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(customUrl)}&quote=${encodeURIComponent(fullMessage)}`;
+            window.open(fbUrl, "_blank");
+        }
+
+        // 5. Copy Link & Message
+        function copyPrankLink(mode) {
+            const { fullMessage } = getSharePayload(mode);
+            copyTextToClipboard(fullMessage);
+            showToast("✅ Prank Link Copy Ho Gaya! Ab Dost Ko Paste Kar ke Bhejo!");
+        }
+
+        // Iframe-safe Clipboard Helper
+        function copyTextToClipboard(text) {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        }
+
+        function showToast(msg) {
+            const box = document.getElementById("toastBox");
+            document.getElementById("toastText").textContent = msg;
+            box.classList.remove("hidden");
+            setTimeout(() => {
+                box.classList.add("hidden");
+            }, 3200);
+        }
+    </script>
+</body>
+</html>
